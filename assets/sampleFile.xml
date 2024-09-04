@@ -1,0 +1,27 @@
+<library>
+    <book id="1">
+        <title>The book of Bill</title>
+        <author>Alex Hirsch</author>
+        <genre>Fiction</genre>
+    </book>
+    <book id="1">
+        <title>Atomic Habits</title>
+        <author>James Clear</author>
+        <genre>Self-help</genre>
+    </book>
+    <book id="2">
+        <title>The Wild Robot</title>
+        <author>Peter Brown</author>
+        <genre>Novel</genre>
+    </book>
+    <book id="3">
+        <title>Farenheit 451</title>
+        <author>Ray Bradbury</author>
+        <genre>Novel</genre>
+    </book>
+    <user id="4">
+        <title>Laws of Human Nature</title>
+        <author>Robert Greene</author>
+        <genre>Business and Money</genre>
+    </user>
+</library>
