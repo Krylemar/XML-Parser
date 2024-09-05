@@ -1,26 +1,32 @@
 package utils;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.Stack;
 
 public class XmlValidate {
-    public static boolean validateXML(String filePath){
+    public boolean validate(String xmlString) {
         Stack<String> tagStack = new Stack<>();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader reader = new BufferedReader(new StringReader(xmlString))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
 
                 // Skip processing for lines without tags
-                if (!line.contains("<") || !line.contains(">")) continue;
+                if (!line.contains("<") || !line.contains(">")) {
+                    continue;
+                }
 
                 // Extract tags
                 while (line.contains("<") && line.contains(">")) {
                     int startIndex = line.indexOf('<');
                     int endIndex = line.indexOf('>');
+
+                    if (line.contains(" ")) {
+                        endIndex = line.indexOf(" ");
+                    }
 
                     if (startIndex >= 0 && endIndex > startIndex) {
                         String tag = line.substring(startIndex + 1, endIndex);
@@ -51,12 +57,13 @@ public class XmlValidate {
 
             System.out.println("XML is well-formed!");
             return true;
+
         } catch (IOException e) {
-            System.out.println("Error reading the file: " + e.getMessage());
+            System.err.println("Error reading the file: " + e.getMessage());
             return false;
         } catch (RuntimeException e) {
-            System.out.println("XML is not valid: " + e.getMessage());
+            System.err.println("XML is not valid: " + e.getMessage());
             return false;
         }
-    };
+    }
 }

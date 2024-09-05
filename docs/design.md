@@ -17,3 +17,10 @@
   - delete <id> <key> delete attribute of element by id
   - newchild <id> - adds new empty attribute to element
   - xpath <id> <XPath> - Xpath 2.0 query support
+
+Parser is design is as:
+1. Load xml file into memory
+2. Validate if the xml is valid
+3. deserialize xml to a tree
+4. do operations
+5. on save, serialize back to xml
