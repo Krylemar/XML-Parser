@@ -11,6 +11,7 @@ import java.util.Stack;
 public class XmlConverter {
     private static Node root;
     public static Node deserialize(String xmlString) {
+        XmlValidate.validate(xmlString);
         Stack<Node> nodeStack = new Stack<>();
 
         try (BufferedReader reader = new BufferedReader(new StringReader(xmlString))) {
@@ -20,6 +21,10 @@ public class XmlConverter {
 
                 if (line.startsWith("<?") || line.startsWith("<!")) {
                     // Ignore XML declarations and DTDs
+                    continue;
+                }
+                if (line.contains("<!--") && line.contains("-->")) {
+                    // Ignore comments
                     continue;
                 }
 
@@ -52,7 +57,7 @@ public class XmlConverter {
                         }
                     }
                     Node node;
-                    if (attributeMap.keySet().contains("id")){
+                    if (attributeMap.containsKey("id")){
                         node = new Node(tagName, attributeMap.get("id"));
                         attributeMap.remove("id");
                         node.setAttributes(attributeMap);
@@ -81,7 +86,13 @@ public class XmlConverter {
                     }
                 } else {
                     // Content between tags
-                    if (!nodeStack.isEmpty()) {
+                    if (!nodeStack.isEmpty() && nodeStack.peek().getContent() != null) {
+                        // Multiline content processing for 2+ lines
+                        Node currentNode = nodeStack.pop();
+                        String content = currentNode.getContent();
+                        currentNode.setContent(content + " " + line);
+                        nodeStack.push(currentNode);
+                    } else if (!nodeStack.isEmpty()){ //First line of content
                         Node currentNode = nodeStack.peek();
                         currentNode.setContent(line);
                     }

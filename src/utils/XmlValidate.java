@@ -6,7 +6,7 @@ import java.io.StringReader;
 import java.util.Stack;
 
 public class XmlValidate {
-    public boolean validate(String xmlString) {
+    public static boolean validate(String xmlString) {
         Stack<String> tagStack = new Stack<>();
 
         try (BufferedReader reader = new BufferedReader(new StringReader(xmlString))) {
@@ -24,12 +24,8 @@ public class XmlValidate {
                     int startIndex = line.indexOf('<');
                     int endIndex = line.indexOf('>');
 
-                    if (line.contains(" ")) {
-                        endIndex = line.indexOf(" ");
-                    }
-
                     if (startIndex >= 0 && endIndex > startIndex) {
-                        String tag = line.substring(startIndex + 1, endIndex);
+                        String tag = line.substring(startIndex + 1, endIndex).split("\\s+")[0];
 
                         // Check if it's a closing tag
                         if (tag.startsWith("/")) {
